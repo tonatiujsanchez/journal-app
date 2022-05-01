@@ -3,7 +3,10 @@ import { types } from "../types/types"
 import { firebase, googleAuthProvider } from "../firebase/firebase-config"
 import { startLoading, finishLoading } from "./ui"
 
+import Swal from 'sweetalert2'
 
+/*===== ====== ====== LOGIN ====== ====== ======*/ 
+/*===== ====== ====== ====== ====== ====== ======*/ 
 
 export const startLoginEmailPassword = ( email, password ) => {
     return ( dispatch ) => {
@@ -17,8 +20,20 @@ export const startLoginEmailPassword = ( email, password ) => {
                 dispatch( finishLoading() )
             })
             .catch( e =>{
-                console.log( e )
+
+                const errorCode = e.code
                 dispatch( finishLoading() )
+
+                if( errorCode === 'auth/user-not-found' ){
+                    Swal.fire('Error', 'El correo ingresado no esta registrado', 'error')
+                    return
+                }
+                if( errorCode === 'auth/wrong-password'){
+                    Swal.fire('Error', 'Contraseña incorrecta', 'error')
+                    return
+                }
+
+                Swal.fire('Error', 'Hubo un error inesperado al intentar iniciar sesión', 'error')
             })
                 
     }
@@ -37,8 +52,16 @@ export const startRegisterWithEmailPasswordName = ( email, password, name ) =>{
                 dispatch( finishLoading() )
             })
             .catch( e => {
-                console.log(e)
+
+                const errorCode = e.code
                 dispatch( finishLoading() )
+
+                if(errorCode === 'auth/email-already-in-use'){
+                    Swal.fire('Error', `Ya existe una cuenta registada con el correo: ${email}`, 'error')
+      
+                }else{
+                    Swal.fire('Error', `Hubo un error al intentar crear la cuenta, intentelo nuevamente`, 'error')
+                }
             })
     }
 }
@@ -63,7 +86,7 @@ export const startGoogleLogin = () => {
 
 export const login = (uid, displayName) => {
 
-    return{
+    return {
         type: types.login,
         payload: {
             uid,
@@ -71,3 +94,24 @@ export const login = (uid, displayName) => {
         }
     }
 }
+
+
+
+/*===== ====== ====== LOGOUT ====== ====== ======*/ 
+/*===== ====== ====== ====== ====== ====== ======*/ 
+
+export const startLogout = () => {
+    return async( dispatch ) => {
+        await firebase.auth().signOut()
+
+        dispatch( logout() )
+    }
+}
+
+export const logout = () => {
+    return {
+        type: types.logout
+    }
+}
+
+

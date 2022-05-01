@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -5,17 +6,24 @@ import useForm from "../../hooks/useForm"
 import { isEmail } from 'validator'
 
 import { startGoogleLogin, startLoginEmailPassword } from "../../actions/auth"
+import { removeError, setError } from "../../actions/ui"
 
 const LoginScreen = () => {
 
     const dispatch = useDispatch()
-    const { loading } = useSelector( state => state.ui )
+    const { loading, msgError } = useSelector( state => state.ui )
 
 
     const [{ email, password }, handleInputChange ] = useForm({
         email: 'brandon@gmail.com',
         password: '123456'
     })
+
+    useEffect(()=>{
+        return( ()=>{
+            dispatch( removeError() )
+        })
+    },[])
 
 
     const handleLogin = (e) => {
@@ -35,16 +43,16 @@ const LoginScreen = () => {
     const isFormValid = () => {
         
         if( [ email.trim(), password.trim() ].includes('') ){
-            console.log('Todos los campos on obligatorios');
+            dispatch( setError('Todos los campos on obligatorios') )
             return false
         }
 
         if( !isEmail( email ) ){
-            console.log('El correo ingresado no es valido');    
+            dispatch( setError('El correo ingresado no es valido') )   
             return false
         }
 
-
+        dispatch( removeError() )
         return true
     }
 
@@ -52,6 +60,11 @@ const LoginScreen = () => {
         <>
             <h3 className="auth_title">Iniciar Sesión</h3>
             <form onSubmit={handleLogin}>
+                { msgError &&
+                    <div className="auth__alert-error">
+                        { msgError }
+                    </div>
+                }
                 <input
                     type="text"
                     placeholder="example@email.com"

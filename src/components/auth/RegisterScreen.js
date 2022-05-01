@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -19,6 +20,13 @@ const RegisterScreen = () => {
         password: '123456',
         password2: '123456'
     })
+
+    useEffect(()=>{
+        return( ()=>{
+            dispatch( removeError() )
+        })
+    },[])
+
 
 
     const handleRegister = ( e ) => {
