@@ -1,12 +1,16 @@
-import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
-import { startGoogleLogin, startLoginEmailPassword } from "../../actions/auth"
-import useForm from "../../hooks/useForm"
+import { useDispatch, useSelector } from "react-redux"
 
+import useForm from "../../hooks/useForm"
+import { isEmail } from 'validator'
+
+import { startGoogleLogin, startLoginEmailPassword } from "../../actions/auth"
 
 const LoginScreen = () => {
 
     const dispatch = useDispatch()
+    const { loading } = useSelector( state => state.ui )
+
 
     const [{ email, password }, handleInputChange ] = useForm({
         email: 'brandon@gmail.com',
@@ -17,13 +21,31 @@ const LoginScreen = () => {
     const handleLogin = (e) => {
         e.preventDefault()
 
-        // console.log({ email, password })
+        if ( isFormValid() ) {
+            dispatch( startLoginEmailPassword( email, password) )
+        }
 
-        dispatch( startLoginEmailPassword( email, password) )
     }
 
     const handleGoogleLogin = () => {
         dispatch( startGoogleLogin() )
+    }
+
+
+    const isFormValid = () => {
+        
+        if( [ email.trim(), password.trim() ].includes('') ){
+            console.log('Todos los campos on obligatorios');
+            return false
+        }
+
+        if( !isEmail( email ) ){
+            console.log('El correo ingresado no es valido');    
+            return false
+        }
+
+
+        return true
     }
 
     return (
@@ -46,7 +68,12 @@ const LoginScreen = () => {
                     onChange={ handleInputChange }
                     className="auth__input"
                     autoComplete="off" />
-                <button type="submit" className="btn btn-primary btn-block">Ingresar</button>
+                <button 
+                    type="submit" 
+                    className="btn btn-primary btn-block"
+                    disabled={ loading } >
+                        Ingresar
+                </button>
 
 
                 <div className="auth__social-networks">
