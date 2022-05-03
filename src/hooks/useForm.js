@@ -16,8 +16,8 @@ const useForm = ( initialState = {} ) =>{
     }
 
 
-    const resetForm = () =>{
-        setValues( initialState )
+    const resetForm = ( newFormState = initialState ) =>{
+        setValues( newFormState )
     }
 
     return [ values, handleInputChange, resetForm ]

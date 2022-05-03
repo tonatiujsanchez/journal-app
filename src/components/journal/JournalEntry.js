@@ -1,24 +1,39 @@
+import { useDispatch } from "react-redux"
+import { activeNote } from "../../actions/notes"
 
 
-const JournalEntry = () => {
-  return (
-    <div className="journal__entry pointer">
-        <div className="journal__entry-picture"
-            style={{
-                backgroundSize: 'cover',
-                backgroundImage: 'url(https://static.wikia.nocookie.net/marveldatabase/images/6/67/Stephen_Strange_%28Earth-199999%29_from_Spider-Man_No_Way_Home_Promo_001.jpg)'
-            }} >
+const JournalEntry = ({ id, title, body, date, url }) => {
+
+    const dispatch = useDispatch()
+
+    const weekday = new Date(date).toLocaleDateString('es-ES', { weekday: 'long' })
+    const day = new Date(date).toLocaleDateString('es-ES', { day: '2-digit' })
+
+    const handleActive = () => {
+        dispatch( activeNote( id,{ title, body, date, url } ))
+    }
+
+    return (
+        <div className="journal__entry pointer"
+            onClick={ handleActive }>
+            { url &&
+                <div className="journal__entry-picture"
+                    style={{
+                        backgroundSize: 'cover',
+                        backgroundImage: `url(${url})`
+                    }} >
+                </div>
+            }
+            <div className="journal__entry-body">
+                <p className="journal__entry-title pointer">{ title }</p>
+                <p className="journal__entry-content pointer">{ body }</p>
+            </div>
+            <div className="journal__entry-date-box">
+                <span>{ weekday }</span>
+                <h4>{ day }</h4>
+            </div>
         </div>
-        <div className="journal__entry-body">
-            <p className="journal__entry-title pointer">Un nuevo dia</p>
-            <p className="journal__entry-content pointer">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-        </div>
-        <div className="journal__entry-date-box">
-            <span>Lunes</span>
-            <h4>28</h4>
-        </div>
-    </div>
-  )
+    )
 }
 
 export default JournalEntry
