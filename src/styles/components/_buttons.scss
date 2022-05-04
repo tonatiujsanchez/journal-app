@@ -32,6 +32,16 @@
     }
 }
 
+.btn-danger{
+    background-color: red;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    transition: background-color .3s ease;
+    &:hover {
+        color: white;
+        background-color: darken($color: red, $amount: 10);
+    }
+}
+
 .google-btn {
     cursor: pointer;
     margin-top: 5px;

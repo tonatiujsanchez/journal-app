@@ -67,6 +67,12 @@
     display: flex;
     margin-bottom: 10px;
     overflow: hidden;
+    display: flex;
+    border-right: 6px solid transparent;
+}
+
+.journal__entry.active {
+    border-right: 6px solid darken($color: $primary,  $amount: 10);
 }
 
 .journal__entry-picture {
@@ -76,6 +82,7 @@
 
 .journal__entry-body {
     padding: 10px;
+    flex-grow: 1;
 }
 
 .journal__entry-title {

@@ -4,6 +4,7 @@ import { db } from "../firebase/firebase-config"
 import { types } from "../types/types"
 
 import { loadNotes } from "../helpers/loadNotes"
+import { fileUpload } from '../helpers/fileUpload'
 
 
 export const startNewNote = () => {
@@ -19,11 +20,22 @@ export const startNewNote = () => {
         }
 
         const doc = await db.collection(`${uid}/journal/notes`).add(newNote)
+        dispatch( addNewNote( doc.id, newNote ) )
         dispatch( activeNote( doc.id, newNote ) )
     }
 }
 
 
+export const addNewNote = (id, newNote) => {
+    return {    
+        type: types.notesAddNew,
+        payload:{
+            id, 
+            ...newNote
+        }
+
+    }
+}
 
 export const activeNote = (id, note) => {
     
@@ -35,6 +47,13 @@ export const activeNote = (id, note) => {
         }
     }
 
+}
+
+export const removeActiveNote = () => {
+    
+    return {
+        type: types.notesActiveRemove
+    }
 }
 
 
@@ -95,4 +114,88 @@ export const refreshNote = ( id, note ) => {
             note
         }
     }
+}
+
+export const startUploading = ( file ) => {
+    
+    return async( dispatch, getState )=> {
+
+        const { active } = getState().notes
+
+        Swal.fire({
+            title: 'Cargando...',
+            text: 'Espere porfavor',
+            allowOutsideClick: false,
+            didOpen: () =>{
+                Swal.showLoading()
+            }
+        })
+
+        const fileUrl = await fileUpload( file )
+        active.url = fileUrl
+
+        dispatch( startSaveNote( active ) )
+        
+        Swal.close()
+    }
+}
+
+
+
+export const stratDeleteNote = ( id ) => {
+    return async( dispatch, getState ) => {
+
+        const confirmDelete = await Swal.fire({
+            title: '¿Eliminar?',
+            text: "Desea eliminar esta nota",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Eliminar'
+          })
+
+        if( confirmDelete.isConfirmed ){
+
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Espere porfavor',
+                allowOutsideClick: false,
+                didOpen: () =>{
+                    Swal.showLoading()
+                }
+            })
+
+            const { uid } = getState().auth
+            try {
+                await db.doc(`${uid}/journal/notes/${id}`).delete()
+                dispatch( deleteNote( id ) )
+                Swal.fire('¡Eliminado!', 'La nota se elimino correctamente', 'success')
+            } catch (error) {
+                throw error
+            }
+        }
+
+    }
+}
+
+
+export const deleteNote = ( id ) => {
+    return{
+        type: types.notesDelete,
+        payload: id
+    }
+}
+
+
+
+
+export const notesLogoutPurge = () => {
+  return {
+      type: types.notesLogoutCleaning,
+      payload: {
+          notes: [],
+          active: null
+      }
+  }
 }

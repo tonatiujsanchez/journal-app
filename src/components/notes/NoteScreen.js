@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { activeNote } from "../../actions/notes"
+import { activeNote, stratDeleteNote } from "../../actions/notes"
 import useForm from "../../hooks/useForm"
 import NoteAppBar from "./NoteAppBar"
 
@@ -16,12 +16,18 @@ const NoteScreen = () => {
     const { id, title, body } = values
    
     const activeId = useRef( note.id )
+    const activeUrl = useRef( note.url )
 
     useEffect(()=>{
         if( note.id !== activeId.current ){
             resetForm( note )
             activeId.current = note.id
         }
+        if( note.url !== activeUrl.current ){
+            resetForm( note )
+            activeUrl.current = note.url
+        }
+
     },[note, resetForm])
 
     useEffect(()=>{
@@ -30,10 +36,14 @@ const NoteScreen = () => {
 
     
 
+    const handleDelete = () => {
+        dispatch( stratDeleteNote( id ) )
+    }
+
     return (
         <div className="notes__main-content">
             <NoteAppBar />
-            <div className="notes__content">
+            <div className="notes__content animate__animated animate__fadeInDown animate__faster">
                 <input
                     type="text"
                     name="title"
@@ -51,10 +61,15 @@ const NoteScreen = () => {
                 </textarea>
                 { note.url &&
                     <div className="notes__image">
-                        <img src="https://definicion.de/wp-content/uploads/2009/12/paisaje-1.jpg" alt="Foto de la nota" />
+                        <img src={ note.url } alt={ title } />
                     </div>
                 }
             </div>
+            <button
+                onClick={ handleDelete } 
+                className="btn btn-danger">
+                    Eliminar
+            </button>
         </div>
     )
 }

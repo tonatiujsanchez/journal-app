@@ -31,10 +31,9 @@ const Siderbar = () => {
                     <i className="fa-solid fa-right-from-bracket fa-xl"></i>
                 </button>
             </div>
-            <div className="journal__new-entry pointer"
-                onClick={handleAddNew}>
-                <i className="far fa-calendar-plus fa-4x"></i>
-                <p className="mt-3 pointer">Nueva entrada</p>
+            <div className="journal__new-entry">
+                <i className="far fa-calendar-plus fa-4x pointer" onClick={handleAddNew}></i>
+                <p className="mt-3 pointer" onClick={handleAddNew}>Nueva entrada</p>
             </div>
 
             <JournalEntries />

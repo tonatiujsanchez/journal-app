@@ -26,6 +26,19 @@
     &:focus {
         outline: none;
     }
+
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+    
+    &::-webkit-scrollbar:vertical {
+        width:8px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: lighten($color: $dark-grey, $amount: 40);
+        border-radius: 20px;
+    }
 }
 
 .notes__title-input {

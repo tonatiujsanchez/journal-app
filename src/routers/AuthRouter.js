@@ -9,7 +9,7 @@ import RegisterScreen from "../components/auth/RegisterScreen"
 const AuthRouter = () => {
     return (
         <div className="auth__main">
-            <div className="auth__box-container">
+            <div className="auth__box-container animate__animated animate__fadeIn animate__faster">
                 <Switch>
                     <Route exact path="/auth/login" component={ LoginScreen }/>
                     <Route exact path="/auth/register" component={ RegisterScreen }/>
@@ -21,3 +21,5 @@ const AuthRouter = () => {
 }
 
 export default AuthRouter
+
+

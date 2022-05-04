@@ -15,8 +15,8 @@ const LoginScreen = () => {
 
 
     const [{ email, password }, handleInputChange ] = useForm({
-        email: 'brandon@gmail.com',
-        password: '123456'
+        email: '',
+        password: ''
     })
 
     useEffect(()=>{

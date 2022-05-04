@@ -15,10 +15,10 @@ const RegisterScreen = () => {
 
 
     const [{ name, email, password, password2 }, handleInputChange ] = useForm({
-        name: 'Brandon',
-        email: 'brandon@gmail.com',
-        password: '123456',
-        password2: '123456'
+        name: '',
+        email: '',
+        password: '',
+        password2: ''
     })
 
     useEffect(()=>{
