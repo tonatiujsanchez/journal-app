@@ -59,7 +59,7 @@ const LoginScreen = () => {
     return (
         <>
             <h3 className="auth_title">Iniciar Sesión</h3>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={ handleLogin }>
                 { msgError &&
                     <div className="auth__alert-error">
                         { msgError }
@@ -85,19 +85,29 @@ const LoginScreen = () => {
                     type="submit" 
                     className="btn btn-primary btn-block"
                     disabled={ loading } >
-                        Ingresar
+                        { loading
+                            ?<span>
+                                <svg
+                                    className="ring"
+                                    viewBox="25 25 50 50"
+                                    strokeWidth="5" >
+                                    <circle cx="50" cy="50" r="20" />
+                                </svg>
+                             </span>
+                            : <span>Ingresar</span>
+                        }
                 </button>
 
 
                 <div className="auth__social-networks">
-                    <p>Iniciar Sesión con un red Social</p>
+                    <p className="auht__social-subtitle">Iniciar Sesión con una Red Social</p>
                     <div className="google-btn"
                          onClick={ handleGoogleLogin } >
                         <div className="google-icon-wrapper">
                             <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" />
                         </div>
                         <p className="btn-text pointer">
-                            <b>Sign in with google</b>
+                            <b>Iniciar con google</b>
                         </p>
                     </div>
                 </div>

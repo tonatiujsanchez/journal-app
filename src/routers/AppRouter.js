@@ -39,7 +39,7 @@ const AppRouter = () => {
     if( checking ){
         return (
             <div className="loading-container">
-                <div class="race-by"></div>
+                <div className="race-by"></div>
                 <p>Cargando...</p>
             </div>
         )

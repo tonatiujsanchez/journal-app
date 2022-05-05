@@ -113,7 +113,17 @@ const RegisterScreen = () => {
                     type="submit" 
                     className="btn btn-primary btn-block"
                     disabled={ loading } >
-                        Registrarme
+                        { loading
+                            ?<span>
+                                <svg
+                                    className="ring"
+                                    viewBox="25 25 50 50"
+                                    stroke-width="5" >
+                                    <circle cx="50" cy="50" r="20" />
+                                </svg>
+                             </span>
+                            : <span>Registrarme</span>
+                        }
                 </button>
 
                 <Link to="/auth/login" className="link mt-5"> Iniciar Sesión</Link>
